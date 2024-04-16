@@ -6,7 +6,14 @@
 FILE* logfile;
 FILE* configfile;
 
+enum InputType {
+	INPUTTYPE_KEYBOARD,
+	INPUTTYPE_SDLGAMECONTROLLER,
+	//more soon :3
+};
+
 typedef struct Button {
+	enum InputType type;
 	uint64_t uuid[2];
 	byte mapping;
 } Button;

@@ -26,11 +26,16 @@ byte GetButtonState(Button* button) {
 	int ButtonState = 0;
 	int i;
 	for (i = 0; i < 3; i++) {
-		if (button[i].uuid[0] == 0 && button[i].uuid[1] == 0) {
+		switch (button[i].type) {
+		case INPUTTYPE_KEYBOARD:
 			ButtonState = keyboardState[button[i].mapping];
-		}
-		else {
+			break;
+		case INPUTTYPE_SDLGAMECONTROLLER:
 			ButtonState = SDL_GameControllerGetButton(button[i].uuid, button[i].mapping);
+			break;
+		default:
+			//idk
+			break;
 		}
 	}
 }
