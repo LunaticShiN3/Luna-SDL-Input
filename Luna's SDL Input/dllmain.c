@@ -86,11 +86,8 @@ EXPORT void CALL GetDllInfo(PLUGIN_INFO* PluginInfo) {
 
 EXPORT void CALL GetKeys(int Control, BUTTONS* Keys) {
     if (config.controller[Control].isConnected) {
-        byte integerX;
-        byte integerY;
-
-        float floatX;
-        float floatY;
+        byte AnalogX;
+        byte AnalogY;
 
         Keys->R_DPAD = GetButtonState(Control, config.controller[Control].DpadRight);
         Keys->L_DPAD = GetButtonState(Control, config.controller[Control].DpadLeft);
@@ -106,43 +103,12 @@ EXPORT void CALL GetKeys(int Control, BUTTONS* Keys) {
         Keys->U_CBUTTON = GetButtonState(Control, config.controller[Control].DpadRight);
         Keys->R_TRIG = GetButtonState(Control, config.controller[Control].DpadRight);
         Keys->L_TRIG = GetButtonState(Control, config.controller[Control].DpadRight);
-    }
-    //Lunadinput stuff for reference on keyboard analog handling
 
-    /*if (deviceState[config.keybindLeft] >> 7) {
-        integerX = -1;
+        GetAnalogState(Control, &AnalogX, &AnalogY);
+        //X and Y axis namings are swapped in input spec
+        Keys->Y_AXIS = AnalogX;
+        Keys->X_AXIS = AnalogY;
     }
-    else if (deviceState[config.keybindRight] >> 7) {
-        integerX = 1;
-    }
-    else {
-        integerX = 0;
-    }
-    if (deviceState[config.keybindDown] >> 7) {
-        integerY = -1;
-    }
-    else if (deviceState[config.keybindUp] >> 7) {
-        integerY = 1;
-    }
-    else {
-        integerY = 0;
-    }
-
-    if (integerX != 0 && integerY != 0) {
-        Keys->Y_AXIS = integerX * config.rangeDiagonalX;
-        Keys->X_AXIS = integerY * config.rangeDiagonalY;
-    }
-    else {
-        Keys->Y_AXIS = integerX * config.rangeCardinalX;
-        Keys->X_AXIS = integerY * config.rangeCardinalY;
-    }
-
-    for (int i = 0; i < sizeof(config.modifiers) / sizeof(Modifier); i++) {
-        if ((config.modifiers[i].keybind != 0) && (deviceState[config.modifiers[i].keybind] >> 7)) {
-            Keys->Y_AXIS = (float)Keys->Y_AXIS * config.modifiers[i].multiplierX; //X and Y axis are swapped because of course they are????
-            Keys->X_AXIS = (float)Keys->X_AXIS * config.modifiers[i].multiplierY;
-        }
-    }*/
 }
 
 EXPORT void CALL InitiateControllers(HWND hMainWindow, CONTROL Controls[4])
