@@ -23,6 +23,7 @@ void SDLInit() {
 		if (SDL_IsGameController(i) && (controller[i] = SDL_GameControllerOpen(i))) {
 			joystick[i] = SDL_GameControllerGetJoystick(controller[i]);
 		}
+
 	}
 }
 
@@ -257,23 +258,48 @@ void GetAnalogState(int Cont, byte* AnalogX, byte* AnalogY) {
 			}
 
 			if ((AnalogCurrentX != 0) && (AnalogCurrentY != 0)) {
-				AnalogX = (int)(AnalogCurrentX * config.controller[Cont].d2aRangeDiagonalX);
-				AnalogY = (int)(AnalogCurrentY * config.controller[Cont].d2aRangeDiagonalY);
+				AnalogCurrentX *= config.controller[Cont].d2aRangeDiagonalX;
+				AnalogCurrentY *= config.controller[Cont].d2aRangeDiagonalY;
 			}
 			else {
-				AnalogX = (int)(AnalogCurrentX * config.controller[Cont].d2aRangeCardinalX);
-				AnalogY = (int)(AnalogCurrentY * config.controller[Cont].d2aRangeCardinalY);
-			}
-			for (i = 0; i < 50; i++) {
-				if ((config.controller[Cont].modifiers[i].type != 0) && (config.controller[Cont].modifiers[i].mapping != 0)) {
-					GetModifierState(Cont, config.controller[Cont].modifiers, i);
-				}
+				AnalogCurrentX * config.controller[Cont].d2aRangeCardinalX;
+				AnalogCurrentY * config.controller[Cont].d2aRangeCardinalY;
 			}
 		}
 		//Analog to analog input handling
 		else {
-
+			AnalogCurrentX = AnalogRight - AnalogLeft;
+			AnalogCurrentY = AnalogUp - AnalogDown;
+			AnalogCurrentX *= config.controller[Cont].a2aRangeX;
+			AnalogCurrentY *= config.controller[Cont].a2aRangeY;
+			if (AnalogCurrentX <= config.controller[Cont].a2aDeadzone) {
+				AnalogCurrentX = 0.f;
+			}
+			if (AnalogCurrentY <= config.controller[Cont].a2aDeadzone) {
+				AnalogCurrentY = 0.f;
+			}
+			if (AnalogCurrentX >= config.controller[Cont].a2aOuterEdge) {
+				AnalogCurrentX = 1.f;
+			}
+			if (AnalogCurrentY >= config.controller[Cont].a2aOuterEdge) {
+				AnalogCurrentY = 1.f;
+			}
 		}
+		//Things independent of a2a vs d2a
+		byte ModifierState;
+		for (i = 0; i < 50; i++) {
+			if ((config.controller[Cont].modifiers[i].type != 0) && (config.controller[Cont].modifiers[i].mapping != 0)) {
+				ModifierState = GetModifierState(Cont, config.controller[Cont].modifiers, i);
+				if (ModifierState != 0) {
+					AnalogCurrentX *= config.controller[Cont].modifiers[i].multiplierX;
+					AnalogCurrentY *= config.controller[Cont].modifiers[i].multiplierY;
+				}
+			}
+		}
+		AnalogCurrentX *= 128;
+		AnalogCurrentY *= 128;
+		AnalogX = (int)AnalogCurrentX;
+		AnalogY = (int)AnalogCurrentY;
 	}
 }
 

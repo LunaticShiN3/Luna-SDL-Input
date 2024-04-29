@@ -2,6 +2,7 @@
 #include <Shlwapi.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <SDL.h>
 
 FILE* logfile;
 FILE* configfile;
@@ -19,7 +20,8 @@ enum AnalogType {
 
 typedef struct Button {
 	enum InputType type;
-	uint64_t uuid[2];
+	SDL_JoystickGUID guid;
+	byte contEnum;
 	byte mapping;
 } Button;
 
@@ -58,19 +60,18 @@ typedef struct Controller {
 	Button AnalogUp[3];
 
 	//Analog to analog mapping
-	byte a2aRangeX;
-	byte a2aRangeY;
-	byte a2aDeadzone;
-	byte a2aOuterEdge;
-	byte a2aStickRangeClamping;
+	float a2aRangeX;
+	float a2aRangeY;
+	float a2aDeadzone;
+	float a2aOuterEdge;
 	//Digital to analog mapping
-	byte d2aRangeCardinalX;
-	byte d2aRangeCardinalY;
-	byte d2aRangeDiagonalX;
-	byte d2aRangeDiagonalY;
+	float d2aRangeCardinalX;
+	float d2aRangeCardinalY;
+	float d2aRangeDiagonalX;
+	float d2aRangeDiagonalY;
 	//Analog to digital mapping
-	byte a2dStickThreshold;
-	byte a2dTriggerThreshold;
+	float a2dStickThreshold;
+	float a2dTriggerThreshold;
 
 	//Analog stick modifiers
 	Modifier modifiers[50];
