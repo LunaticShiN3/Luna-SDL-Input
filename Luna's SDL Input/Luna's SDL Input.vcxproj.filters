@@ -46,6 +46,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\SDL\SDL2-2.30.2\lib\x86\SDL2.lib" />
+    <Library Include="..\SDL\SDL3-3.1.1\lib\x86\SDL3.lib" />
   </ItemGroup>
 </Project>

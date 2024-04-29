@@ -2,14 +2,15 @@
 #include <Shlwapi.h>
 #include <stdio.h>
 #include <stdint.h>
-#include <SDL.h>
+#include <SDL3\SDL.h>
+#include <SDL3\SDL_main.h>
 
 FILE* logfile;
 FILE* configfile;
 
 enum InputType {
 	INPUTTYPE_KEYBOARD,
-	INPUTTYPE_SDLGAMECONTROLLER,
+	INPUTTYPE_SDLGAMEPAD,
 	//more soon :3
 };
 

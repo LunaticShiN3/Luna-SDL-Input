@@ -78,7 +78,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\Shuri\source\repos\Luna%27s SDL Input\SDL\SDL2-2.30.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Shuri\source\repos\Luna%27s SDL Input\SDL\SDL3-3.1.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
@@ -98,7 +98,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\Shuri\source\repos\Luna%27s SDL Input\SDL\SDL2-2.30.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Shuri\source\repos\Luna%27s SDL Input\SDL\SDL3-3.1.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
@@ -118,7 +118,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\Shuri\source\repos\Luna%27s SDL Input\SDL\SDL2-2.30.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Shuri\source\repos\Luna%27s SDL Input\SDL\SDL3-3.1.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
@@ -138,7 +138,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\Users\Shuri\source\repos\Luna%27s SDL Input\SDL\SDL2-2.30.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Shuri\source\repos\Luna%27s SDL Input\SDL\SDL3-3.1.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <LanguageStandard_C>Default</LanguageStandard_C>
     </ClCompile>
@@ -169,7 +169,7 @@
     <ClCompile Include="sdl_input.c" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\SDL\SDL2-2.30.2\lib\x86\SDL2.lib" />
+    <Library Include="..\SDL\SDL3-3.1.1\lib\x86\SDL3.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

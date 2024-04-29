@@ -2,29 +2,21 @@
 
 char* filePath[MAX_PATH];
 int err;
-SDL_GameController* controller[10]; //Support up to 10 SDL controllers
+SDL_Gamepad* controller[10]; //Support up to 10 SDL controllers
 SDL_Joystick* joystick[10];
 
 void SDLInit() {
 	//Init SDL
 	SDL_SetMainReady();
-	SDLInit(SDL_INIT_GAMECONTROLLER);
+	SDLInit(SDL_INIT_GAMEPAD);
 	//Find gamecontrollerdb.txt
 	GetModuleFileNameA(NULL, filePath, sizeof(filePath));
 	PathRemoveFileSpecA(filePath);
 	PathAppendA(filePath, "Plugin\\Input\\gamecontrollerdb.txt");
-	SDL_GameControllerAddMappingsFromFile(filePath);
+	SDL_AddGamepadMappingsFromFile(filePath);
 	//Get all (up to 10) connected controllers
-	for (int i = 0; i < SDL_NumJoysticks; i++) {
-		//too many controllers
-		if (i >= 10) {
-			break;
-		}
-		if (SDL_IsGameController(i) && (controller[i] = SDL_GameControllerOpen(i))) {
-			joystick[i] = SDL_GameControllerGetJoystick(controller[i]);
-		}
 
-	}
+	
 }
 
 void SDLDeinit() {
@@ -43,21 +35,21 @@ byte GetButtonState(int Cont, Button* button) {
 		case INPUTTYPE_KEYBOARD:
 			ButtonState = keyboardState[button[i].mapping];
 			break;
-		case INPUTTYPE_SDLGAMECONTROLLER:
+		case INPUTTYPE_SDLGAMEPAD:
 			//Digital to digital mapping
 			if (button[i].mapping < 0x80) {
-				ButtonState = SDL_GameControllerGetButton(/*Controller*/, button[i].mapping);
+				ButtonState = SDL_GetGamepadButton(/*Controller*/, button[i].mapping);
 			}
 			//Analog to digital mapping
 			else {
 				int AxisMapping = button[i].mapping - 0x80;
-				if ((AxisMapping == SDL_CONTROLLER_AXIS_TRIGGERLEFT) || (AxisMapping = SDL_CONTROLLER_AXIS_TRIGGERRIGHT)) {
-					if (SDL_GameControllerGetAxis(/*Controller*/, AxisMapping) >= config.controller[Cont].a2dTriggerThreshold) {
+				if ((AxisMapping == SDL_GAMEPAD_AXIS_LEFT_TRIGGER) || (AxisMapping = SDL_GAMEPAD_AXIS_RIGHT_TRIGGER)) {
+					if (SDL_GetGamepadAxis(/*Controller*/, AxisMapping) >= config.controller[Cont].a2dTriggerThreshold) {
 						ButtonState = 1;
 					}
 				}
 				else {
-					if (SDL_GameControllerGetAxis(/*Controller*/, AxisMapping) >= config.controller[Cont].a2dStickThreshold) {
+					if (SDL_GetGamepadAxis(/*Controller*/, AxisMapping) >= config.controller[Cont].a2dStickThreshold) {
 						ButtonState = 1;
 					}
 				}
@@ -80,21 +72,21 @@ byte GetModifierState(int Cont, Modifier* modifier, int id) {
 	case INPUTTYPE_KEYBOARD:
 		ModifierState = keyboardState[modifier[id].mapping];
 		break;
-	case INPUTTYPE_SDLGAMECONTROLLER:
+	case INPUTTYPE_SDLGAMEPAD:
 		//Digital to digital mapping
 		if (modifier[id].mapping < 0x80) {
-			ModifierState = SDL_GameControllerGetButton(/*Controller*/, modifier[id].mapping);
+			ModifierState = SDL_GetGamepadButton(/*Controller*/, modifier[id].mapping);
 		}
 		//Analog to digital mapping
 		else {
 			int AxisMapping = modifier[id].mapping - 0x80;
-			if ((AxisMapping == SDL_CONTROLLER_AXIS_TRIGGERLEFT) || (AxisMapping = SDL_CONTROLLER_AXIS_TRIGGERRIGHT)) {
-				if (SDL_GameControllerGetAxis(/*Controller*/, AxisMapping) >= config.controller[Cont].a2dTriggerThreshold) {
+			if ((AxisMapping == SDL_GAMEPAD_AXIS_LEFT_TRIGGER) || (AxisMapping = SDL_GAMEPAD_AXIS_RIGHT_TRIGGER)) {
+				if (SDL_GetGamepadAxis(/*Controller*/, AxisMapping) >= config.controller[Cont].a2dTriggerThreshold) {
 					ModifierState = 1;
 				}
 			}
 			else {
-				if (SDL_GameControllerGetAxis(/*Controller*/, AxisMapping) >= config.controller[Cont].a2dStickThreshold) {
+				if (SDL_GetGamepadAxis(/*Controller*/, AxisMapping) >= config.controller[Cont].a2dStickThreshold) {
 					ModifierState = 1;
 				}
 			}
@@ -128,18 +120,18 @@ void GetAnalogState(int Cont, byte* AnalogX, byte* AnalogY) {
 				DigitalToAnalogCount += 1;
 			}
 			break;
-		case INPUTTYPE_SDLGAMECONTROLLER:
+		case INPUTTYPE_SDLGAMEPAD:
 			//Digital to analog mapping
 			if (config.controller[Cont].AnalogRight[i].mapping < 0x80) {
-				if (SDL_GameControllerGetButton(/*Controller*/, config.controller[Cont].AnalogRight[i].mapping) != 0) {
+				if (SDL_GetGamepadButton(/*Controller*/, config.controller[Cont].AnalogRight[i].mapping) != 0) {
 					AnalogRight = 1.f;
 					DigitalToAnalogCount += 1;
 				}
 			}
 			//Analog to analog mapping
 			else {
-				if (SDL_GameControllerGetAxis(/*Controller*/, config.controller[Cont].AnalogRight[i].mapping - 0x80) > 0) {
-					AnalogRight = abs(SDL_GameControllerGetAxis(/*Controller*/, config.controller[Cont].AnalogRight[i].mapping - 0x80));
+				if (SDL_GetGamepadAxis(/*Controller*/, config.controller[Cont].AnalogRight[i].mapping - 0x80) > 0) {
+					AnalogRight = abs(SDL_GetGamepadAxis(/*Controller*/, config.controller[Cont].AnalogRight[i].mapping - 0x80));
 					AnalogRight /= 32768.f;
 				}
 			}
@@ -157,18 +149,18 @@ void GetAnalogState(int Cont, byte* AnalogX, byte* AnalogY) {
 				DigitalToAnalogCount += 1;
 			}
 			break;
-		case INPUTTYPE_SDLGAMECONTROLLER:
+		case INPUTTYPE_SDLGAMEPAD:
 			//Digital to analog mapping
 			if (config.controller[Cont].AnalogLeft[i].mapping < 0x80) {
-				if (SDL_GameControllerGetButton(/*Controller*/, config.controller[Cont].AnalogLeft[i].mapping) != 0) {
+				if (SDL_GetGamepadButton(/*Controller*/, config.controller[Cont].AnalogLeft[i].mapping) != 0) {
 					AnalogLeft = 1.f;
 					DigitalToAnalogCount += 1;
 				}
 			}
 			//Analog to analog mapping
 			else {
-				if (SDL_GameControllerGetAxis(/*Controller*/, config.controller[Cont].AnalogLeft[i].mapping - 0x80) < 0) {
-					AnalogLeft = abs(SDL_GameControllerGetAxis(/*Controller*/, config.controller[Cont].AnalogLeft[i].mapping - 0x80));
+				if (SDL_GetGamepadAxis(/*Controller*/, config.controller[Cont].AnalogLeft[i].mapping - 0x80) < 0) {
+					AnalogLeft = abs(SDL_GetGamepadAxis(/*Controller*/, config.controller[Cont].AnalogLeft[i].mapping - 0x80));
 					AnalogLeft /= 32768.f;
 				}
 			}
@@ -186,18 +178,18 @@ void GetAnalogState(int Cont, byte* AnalogX, byte* AnalogY) {
 				DigitalToAnalogCount += 1;
 			}
 			break;
-		case INPUTTYPE_SDLGAMECONTROLLER:
+		case INPUTTYPE_SDLGAMEPAD:
 			//Digital to analog mapping
 			if (config.controller[Cont].AnalogDown[i].mapping < 0x80) {
-				if (SDL_GameControllerGetButton(/*Controller*/, config.controller[Cont].AnalogDown[i].mapping) != 0) {
+				if (SDL_GetGamepadButton(/*Controller*/, config.controller[Cont].AnalogDown[i].mapping) != 0) {
 					AnalogDown = 1.f;
 					DigitalToAnalogCount += 1;
 				}
 			}
 			//Analog to analog mapping
 			else {
-				if (SDL_GameControllerGetAxis(/*Controller*/, config.controller[Cont].AnalogDown[i].mapping - 0x80) > 0) {
-					AnalogDown = abs(SDL_GameControllerGetAxis(/*Controller*/, config.controller[Cont].AnalogDown[i].mapping - 0x80));
+				if (SDL_GetGamepadAxis(/*Controller*/, config.controller[Cont].AnalogDown[i].mapping - 0x80) > 0) {
+					AnalogDown = abs(SDL_GetGamepadAxis(/*Controller*/, config.controller[Cont].AnalogDown[i].mapping - 0x80));
 					AnalogDown /= 32768.f;
 				}
 			}
@@ -215,18 +207,18 @@ void GetAnalogState(int Cont, byte* AnalogX, byte* AnalogY) {
 				DigitalToAnalogCount += 1;
 			}
 			break;
-		case INPUTTYPE_SDLGAMECONTROLLER:
+		case INPUTTYPE_SDLGAMEPAD:
 			//Digital to analog mapping
 			if (config.controller[Cont].AnalogUp[i].mapping < 0x80) {
-				if (SDL_GameControllerGetButton(/*Controller*/, config.controller[Cont].AnalogUp[i].mapping) != 0) {
+				if (SDL_GetGamepadButton(/*Controller*/, config.controller[Cont].AnalogUp[i].mapping) != 0) {
 					AnalogUp = 1.f;
 					DigitalToAnalogCount += 1;
 				}
 			}
 			//Analog to analog mapping
 			else {
-				if (SDL_GameControllerGetAxis(/*Controller*/, config.controller[Cont].AnalogUp[i].mapping - 0x80) < 0) {
-					AnalogUp = abs(SDL_GameControllerGetAxis(/*Controller*/, config.controller[Cont].AnalogUp[i].mapping - 0x80));
+				if (SDL_GetGamepadAxis(/*Controller*/, config.controller[Cont].AnalogUp[i].mapping - 0x80) < 0) {
+					AnalogUp = abs(SDL_GetGamepadAxis(/*Controller*/, config.controller[Cont].AnalogUp[i].mapping - 0x80));
 					AnalogUp /= 32768.f;
 				}
 			}
