@@ -115,14 +115,15 @@ EXPORT void CALL InitiateControllers(HWND hMainWindow, CONTROL Controls[4])
 {
     for (int i = 0; i < 4; ++i)
     {
-        Controls[i].Present = FALSE; //Enables controller 1 only. Might change later.
+        if (config.controller[i].isConnected) {
+            Controls[i].Present = TRUE; //Enables all connected controllers
+        }
         Controls[i].RawData = FALSE;
     }
-    Controls[0].Present = TRUE;
 
     hMainWindowVariable = hMainWindow;
 
-    DInputInit(hModuleVariable, hMainWindowVariable);
+    SDLInit(hModuleVariable, hMainWindowVariable);
 }
 
 EXPORT void CALL RomClosed(void) {

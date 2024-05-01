@@ -153,6 +153,8 @@
   <ItemGroup>
     <ClInclude Include="config.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="gui.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="sdl_input.h" />
     <ClInclude Include="zilmar_controller_1.0.h" />
     <ClInclude Include="pch.h" />
@@ -160,6 +162,7 @@
   <ItemGroup>
     <ClCompile Include="config.c" />
     <ClCompile Include="dllmain.c" />
+    <ClCompile Include="gui.c" />
     <ClCompile Include="pch.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -170,6 +173,9 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\SDL\SDL3-3.1.1\lib\x86\SDL3.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Gui.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

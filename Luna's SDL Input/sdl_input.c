@@ -1,14 +1,5 @@
+#include "pch.h"
 #include "sdl_input.h"
-
-char* filePath[MAX_PATH];
-int err;
-SDL_Gamepad* controller[10]; //Support up to 10 SDL controllers
-SDL_JoystickID* joystick;
-char* MappedGUIDString[33];
-char* GamepadGUIDString[33];
-int GamepadEnum;
-SDL_Gamepad* CurrentGamepad;
-int DigitalToAnalogCount;
 
 void SDLInit() {
 	//Init SDL
@@ -19,20 +10,15 @@ void SDLInit() {
 	PathRemoveFileSpecA(filePath);
 	PathAppendA(filePath, "Plugin\\Input\\gamecontrollerdb.txt");
 	SDL_AddGamepadMappingsFromFile(filePath);
-	//Get all (up to 10) connected controllers
-	int count = 10;
-	joystick = SDL_GetGamepads(&count);
-	SDL_OpenGamepad(joystick);
-	
-
-
-	for (int i = 0; i < SDL_GetJoysticks; i++) {
-		//too many controllers
+	//Get all connected controllers
+	Joystick = SDL_GetGamepads(&GamepadCount);
+	int i;
+	for (i = 0; i < GamepadCount; i++) {
 		if (i >= 10) {
 			break;
 		}
-		if (SDL_IsGamepad(i) && (controller[i] = SDL_OpenGamepad(i))) {
-			joystick[i] = SDL_GetGamepadJoystick(controller[i]);
+		if (SDL_IsGamepad(Joystick[i])) {
+			Gamepad[i] = SDL_OpenGamepad(Joystick[i]);
 		}
 	}
 }
@@ -53,7 +39,7 @@ SDL_Gamepad* GetCurrentController(SDL_JoystickGUID guid, byte contEnum) {
 		SDL_GUIDToString(SDL_GetGamepadInstanceGUID(i), GamepadGUIDString, sizeof(GamepadGUIDString));
 		if (GamepadGUIDString == MappedGUIDString) {
 			if (GamepadEnum == contEnum) {
-				return controller[i];
+				return Gamepad[i];
 			}
 			else {
 				GamepadEnum++;

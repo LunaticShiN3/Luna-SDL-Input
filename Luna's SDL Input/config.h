@@ -8,23 +8,23 @@
 FILE* logfile;
 FILE* configfile;
 
-enum InputType {
+typedef enum InputType {
 	INPUTTYPE_KEYBOARD,
 	INPUTTYPE_SDLGAMEPAD_BUTTON,
 	INPUTTYPE_SDLGAMEPAD_AXIS_POSITIVE,
 	INPUTTYPE_SDLGAMEPAD_AXIS_NEGATIVE,
 	//more soon :3
-};
+} InputType;
 
 typedef struct Button {
-	enum InputType type;
+	InputType type;
 	SDL_JoystickGUID guid;
 	byte contEnum;
 	byte mapping;
 } Button;
 
 typedef struct Modifier {
-	enum InputType type;
+	InputType type;
 	SDL_JoystickGUID guid;
 	byte contEnum;
 	byte mapping;

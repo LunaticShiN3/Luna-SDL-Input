@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "config.h"
 #include <time.h>
 #include <stdarg.h>
@@ -11,7 +12,7 @@ void GetEmuFolderPath(char* FolderPath) {
 }
 
 //write to log function (taken from Octomino)
-void LogWrite(char* message) {
+/*void LogWrite(char* message) {
     time_t rawtime;
     time(&rawtime);
     struct tm* timeinfo = localtime(&rawtime);
@@ -36,7 +37,7 @@ void LogWrite(char* message) {
     va_end(args);
 
     fprintf(logfile, "\n");
-}
+}*/
 
 void saveConfig(void) {
 
