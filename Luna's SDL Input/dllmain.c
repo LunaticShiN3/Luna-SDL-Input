@@ -59,7 +59,7 @@ EXPORT void CALL CloseDLL(void) {
 EXPORT void CALL DllAbout(HWND hParent) {
     MessageBoxA(
         hParent,
-        "An input plugin that FINALLY works for everything.\n"
+        "An SDL3 based input plugin that FINALLY works for everything.\n"
         "Made by ShiN3\n"
         "Version " PLUGIN_VERSION "\n"
         "Compiled on " __DATE__ "\n\n"

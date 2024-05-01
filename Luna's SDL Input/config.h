@@ -10,13 +10,10 @@ FILE* configfile;
 
 enum InputType {
 	INPUTTYPE_KEYBOARD,
-	INPUTTYPE_SDLGAMEPAD,
+	INPUTTYPE_SDLGAMEPAD_BUTTON,
+	INPUTTYPE_SDLGAMEPAD_AXIS_POSITIVE,
+	INPUTTYPE_SDLGAMEPAD_AXIS_NEGATIVE,
 	//more soon :3
-};
-
-enum AnalogType {
-	ANALOG_DIGITAL,
-	ANALOG_ANALOG,
 };
 
 typedef struct Button {
@@ -28,7 +25,8 @@ typedef struct Button {
 
 typedef struct Modifier {
 	enum InputType type;
-	uint64_t uuid[2];
+	SDL_JoystickGUID guid;
+	byte contEnum;
 	byte mapping;
 	float multiplierX;
 	float multiplierY;
@@ -36,7 +34,6 @@ typedef struct Modifier {
 
 typedef struct Controller {
 	byte isConnected;
-	enum AnalogType analogType[3];
 
 	//N64 Buttons
 	Button DpadRight[3];
